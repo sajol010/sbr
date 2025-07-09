@@ -1,0 +1,113 @@
+<div class="container-fluid">
+  <!-- Page Title -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="page-title mb-0">Add New Customer</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <!-- First Name -->
+          <div class="col-md-6 mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                   [ngClass]="{ 'is-invalid': f['firstName'].touched && f['firstName'].errors }">
+            <div *ngIf="f['firstName'].touched && f['firstName'].errors" class="invalid-feedback">
+              <div *ngIf="f['firstName'].errors['required']">First name is required.</div>
+            </div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-md-6 mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                   [ngClass]="{ 'is-invalid': f['lastName'].touched && f['lastName'].errors }">
+            <div *ngIf="f['lastName'].touched && f['lastName'].errors" class="invalid-feedback">
+              <div *ngIf="f['lastName'].errors['required']">Last name is required.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Email -->
+          <div class="col-md-6 mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" formControlName="email" class="form-control"
+                   [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].errors }">
+            <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
+              <div *ngIf="f['email'].errors['required']">Email is required.</div>
+              <div *ngIf="f['email'].errors['email']">Please enter a valid email address.</div>
+            </div>
+          </div>
+
+          <!-- Phone (Optional) -->
+          <div class="col-md-6 mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" id="phone" formControlName="phone" class="form-control">
+          </div>
+        </div>
+
+        <!-- Company Name (Optional) -->
+        <div class="mb-3">
+          <label for="companyName" class="form-label">Company Name</label>
+          <input type="text" id="companyName" formControlName="companyName" class="form-control">
+        </div>
+
+        <h5 class="mt-4 mb-3">Address Details</h5>
+        <!-- Address Street -->
+        <div class="mb-3">
+          <label for="addressStreet" class="form-label">Street Address</label>
+          <input type="text" id="addressStreet" formControlName="addressStreet" class="form-control">
+        </div>
+
+        <div class="row">
+          <!-- Address City -->
+          <div class="col-md-4 mb-3">
+            <label for="addressCity" class="form-label">City</label>
+            <input type="text" id="addressCity" formControlName="addressCity" class="form-control">
+          </div>
+
+          <!-- Address State -->
+          <div class="col-md-4 mb-3">
+            <label for="addressState" class="form-label">State / Province</label>
+            <input type="text" id="addressState" formControlName="addressState" class="form-control">
+          </div>
+
+          <!-- Address Zip Code -->
+          <div class="col-md-4 mb-3">
+            <label for="addressZipCode" class="form-label">Zip / Postal Code</label>
+            <input type="text" id="addressZipCode" formControlName="addressZipCode" class="form-control">
+          </div>
+        </div>
+
+        <!-- Address Country -->
+        <div class="mb-3">
+            <label for="addressCountry" class="form-label">Country</label>
+            <input type="text" id="addressCountry" formControlName="addressCountry" class="form-control">
+        </div>
+
+
+        <!-- Error Message for API response -->
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="customerForm.invalid || isSubmitting">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+            {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isSubmitting">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

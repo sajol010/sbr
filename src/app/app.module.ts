@@ -11,6 +11,7 @@ import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { CoreModule } from './code/code.module';
+// CustomerModule will be lazy loaded, so remove import from here
 // StaffModule will be lazy loaded, so remove import from here
 
 @NgModule({
@@ -25,6 +26,7 @@ import { CoreModule } from './code/code.module';
     CoreModule,
     AdminLayoutModule,
     PagesModule
+    // CustomerModule removed for lazy loading
     // StaffModule removed for lazy loading
   ],
   providers: [],
