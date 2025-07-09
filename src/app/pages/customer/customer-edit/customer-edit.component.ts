@@ -27,15 +27,17 @@ export class CustomerEditComponent implements OnInit {
   ngOnInit(): void {
     this.customerForm = this.fb.group({
       firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      lastName: [''], // Nullable in DB
       email: ['', [Validators.required, Validators.email]],
       phone: [''],
-      companyName: [''],
-      addressStreet: [''],
-      addressCity: [''],
-      addressState: [''],
-      addressZipCode: [''],
-      addressCountry: ['']
+      companyName: [''], // Retained as optional
+      address: ['', Validators.required], // Main address line
+      city: [''],
+      state: [''],
+      zipcode: [''],
+      country: [''],
+      profilePicUrl: [''], // URL for profile picture
+      status: [1] // Default, will be overridden by fetched data
     });
 
     this.route.paramMap.subscribe(params => {
