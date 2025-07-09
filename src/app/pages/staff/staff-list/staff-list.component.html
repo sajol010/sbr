@@ -38,20 +38,26 @@
               <th>Email</th>
               <th>Phone</th>
               <th>Role</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="staffList.length === 0 && !isLoading">
-              <td colspan="7" class="text-center">No staff members found.</td>
+              <td colspan="8" class="text-center">No staff members found.</td> <!-- Incremented colspan -->
             </tr>
             <tr *ngFor="let staff of staffList; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ staff.firstName }}</td>
-              <td>{{ staff.lastName }}</td>
+              <td>{{ staff.lastName || 'N/A' }}</td>
               <td>{{ staff.email }}</td>
               <td>{{ staff.phone || 'N/A' }}</td>
               <td>{{ staff.role }}</td>
+              <td>
+                <span *ngIf="staff.status === 1" class="badge bg-success">Active</span>
+                <span *ngIf="staff.status === 0" class="badge bg-danger">Inactive</span>
+                <span *ngIf="staff.status === undefined || staff.status === null" class="badge bg-secondary">Unknown</span>
+              </td>
               <td>
                 <button class="btn btn-sm btn-outline-primary me-2" (click)="navigateToEditStaff(staff.id)" title="Edit">
                   <i class="feather-edit-2"></i> Edit

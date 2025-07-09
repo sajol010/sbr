@@ -11,64 +11,124 @@
   <div class="card">
     <div class="card-body">
       <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
-        <!-- First Name -->
-        <div class="mb-3">
-          <label for="firstName" class="form-label">First Name</label>
-          <input type="text" id="firstName" formControlName="firstName" class="form-control"
-                 [ngClass]="{ 'is-invalid': f['firstName'].touched && f['firstName'].errors }">
-          <div *ngIf="f['firstName'].touched && f['firstName'].errors" class="invalid-feedback">
-            <div *ngIf="f['firstName'].errors['required']">First name is required.</div>
+
+        <h5 class="mb-3">Personal Information</h5>
+        <div class="row">
+          <!-- First Name -->
+          <div class="col-md-6 mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                   [ngClass]="{ 'is-invalid': f['firstName'].touched && f['firstName'].errors }">
+            <div *ngIf="f['firstName'].touched && f['firstName'].errors" class="invalid-feedback">
+              <div *ngIf="f['firstName'].errors['required']">First name is required.</div>
+            </div>
+          </div>
+
+          <!-- Last Name (Optional based on model) -->
+          <div class="col-md-6 mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                   [ngClass]="{ 'is-invalid': f['lastName'].touched && f['lastName'].errors }">
+            <!-- No required error displayed as it's optional in form now -->
           </div>
         </div>
 
-        <!-- Last Name -->
-        <div class="mb-3">
-          <label for="lastName" class="form-label">Last Name</label>
-          <input type="text" id="lastName" formControlName="lastName" class="form-control"
-                 [ngClass]="{ 'is-invalid': f['lastName'].touched && f['lastName'].errors }">
-          <div *ngIf="f['lastName'].touched && f['lastName'].errors" class="invalid-feedback">
-            <div *ngIf="f['lastName'].errors['required']">Last name is required.</div>
+        <div class="row">
+          <!-- Email -->
+          <div class="col-md-6 mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" formControlName="email" class="form-control"
+                   [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].errors }">
+            <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
+              <div *ngIf="f['email'].errors['required']">Email is required.</div>
+              <div *ngIf="f['email'].errors['email']">Please enter a valid email address.</div>
+            </div>
           </div>
-        </div>
 
-        <!-- Email -->
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" id="email" formControlName="email" class="form-control"
-                 [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].errors }">
-          <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
-            <div *ngIf="f['email'].errors['required']">Email is required.</div>
-            <div *ngIf="f['email'].errors['email']">Please enter a valid email address.</div>
+          <!-- Phone (Optional) -->
+          <div class="col-md-6 mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" id="phone" formControlName="phone" class="form-control">
           </div>
-        </div>
-
-        <!-- Phone (Optional) -->
-        <div class="mb-3">
-          <label for="phone" class="form-label">Phone</label>
-          <input type="text" id="phone" formControlName="phone" class="form-control">
-          <!-- No specific validation shown, can add if needed -->
         </div>
 
         <!-- Role -->
         <div class="mb-3">
-          <label for="role" class="form-label">Role</label>
-          <input type="text" id="role" formControlName="role" class="form-control"
-                 placeholder="e.g., Admin, Manager, Technician"
-                 [ngClass]="{ 'is-invalid': f['role'].touched && f['role'].errors }">
-          <!-- Consider using a select dropdown if roles are predefined -->
-          <!--
-          <select id="role" formControlName="role" class="form-select"
-                  [ngClass]="{ 'is-invalid': f.role.touched && f.role.errors }">
-            <option value="" disabled>Select a role</option>
-            <option value="Admin">Admin</option>
-            <option value="Manager">Manager</option>
-            <option value="Technician">Technician</option>
-            <option value="Sales">Sales</option>
-          </select>
-          -->
-          <div *ngIf="f['role'].touched && f['role'].errors" class="invalid-feedback">
-            <div *ngIf="f['role'].errors['required']">Role is required.</div>
+            <label for="role" class="form-label">Role</label>
+            <input type="text" id="role" formControlName="role" class="form-control"
+                   placeholder="e.g., Admin, Manager, Technician"
+                   [ngClass]="{ 'is-invalid': f['role'].touched && f['role'].errors }">
+            <div *ngIf="f['role'].touched && f['role'].errors" class="invalid-feedback">
+              <div *ngIf="f['role'].errors['required']">Role is required.</div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+        <h5 class="mb-3">Address Details</h5>
+        <!-- Address Line 1 -->
+        <div class="mb-3">
+          <label for="address1" class="form-label">Address Line 1</label>
+          <input type="text" id="address1" formControlName="address1" class="form-control"
+                 [ngClass]="{ 'is-invalid': f['address1'].touched && f['address1'].errors }">
+          <div *ngIf="f['address1'].touched && f['address1'].errors" class="invalid-feedback">
+            <div *ngIf="f['address1'].errors['required']">Address Line 1 is required.</div>
           </div>
+        </div>
+
+        <!-- Address Line 2 (Optional) -->
+        <div class="mb-3">
+          <label for="address2" class="form-label">Address Line 2</label>
+          <input type="text" id="address2" formControlName="address2" class="form-control">
+        </div>
+
+        <div class="row">
+          <!-- City -->
+          <div class="col-md-6 mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" id="city" formControlName="city" class="form-control">
+          </div>
+
+          <!-- State -->
+          <div class="col-md-6 mb-3">
+            <label for="state" class="form-label">State / Province</label>
+            <input type="text" id="state" formControlName="state" class="form-control">
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Zip Code -->
+          <div class="col-md-6 mb-3">
+            <label for="zipcode" class="form-label">Zip / Postal Code</label>
+            <input type="text" id="zipcode" formControlName="zipcode" class="form-control">
+          </div>
+
+          <!-- Country -->
+          <div class="col-md-6 mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" id="country" formControlName="country" class="form-control">
+          </div>
+        </div>
+
+        <hr class="my-4">
+        <h5 class="mb-3">Other Details</h5>
+        <!-- Profile Picture URL (Optional) -->
+        <div class="mb-3">
+          <label for="profilePicUrl" class="form-label">Profile Picture URL</label>
+          <input type="url" id="profilePicUrl" formControlName="profilePicUrl" class="form-control" placeholder="https://example.com/image.png">
+          <small class="form-text text-muted">Enter the full URL of the profile picture.</small>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-3">
+          <label for="status" class="form-label">Status</label>
+          <select id="status" formControlName="status" class="form-select"
+                  [ngClass]="{ 'is-invalid': f['status'].touched && f['status'].errors }">
+            <option [ngValue]="1">Active</option>
+            <option [ngValue]="0">Inactive</option>
+          </select>
+           <div *ngIf="f['status'].touched && f['status'].errors" class="invalid-feedback">
+              <div *ngIf="f['status'].errors['required']">Status is required.</div>
+            </div>
         </div>
 
         <!-- Error Message for API response -->
