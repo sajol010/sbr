@@ -1,0 +1,99 @@
+<div class="container-fluid">
+  <!-- Page Title -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="page-title mb-0">{{ pageTitle }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading && !staffForm.dirty" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading staff details...</p>
+  </div>
+
+  <!-- Error Message (for loading or initial state) -->
+  <div *ngIf="errorMessage && !isSubmitting && !staffForm.dirty" class="alert alert-danger">
+    {{ errorMessage }}
+    <button *ngIf="!staffId" class="btn btn-sm btn-link" (click)="onCancel()">Back to List</button>
+  </div>
+
+  <div class="card" *ngIf="!isLoading || staffForm.dirty">
+    <div class="card-body" *ngIf="staffId || !errorMessage"> <!-- Show form if ID exists or no initial load error -->
+      <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
+        <!-- First Name -->
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                 [ngClass]="{ 'is-invalid': f['firstName'].touched && f['firstName'].errors }">
+          <div *ngIf="f['firstName'].touched && f['firstName'].errors" class="invalid-feedback">
+            <div *ngIf="f['firstName'].errors['required']">First name is required.</div>
+          </div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                 [ngClass]="{ 'is-invalid': f['lastName'].touched && f['lastName'].errors }">
+          <div *ngIf="f['lastName'].touched && f['lastName'].errors" class="invalid-feedback">
+            <div *ngIf="f['lastName'].errors['required']">Last name is required.</div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" formControlName="email" class="form-control"
+                 [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].errors }">
+          <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">Email is required.</div>
+            <div *ngIf="f['email'].errors['email']">Please enter a valid email address.</div>
+          </div>
+        </div>
+
+        <!-- Phone (Optional) -->
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="text" id="phone" formControlName="phone" class="form-control">
+        </div>
+
+        <!-- Role -->
+        <div class="mb-3">
+          <label for="role" class="form-label">Role</label>
+          <input type="text" id="role" formControlName="role" class="form-control"
+                 placeholder="e.g., Admin, Manager, Technician"
+                 [ngClass]="{ 'is-invalid': f['role'].touched && f['role'].errors }">
+           <!-- Consider using a select dropdown if roles are predefined -->
+          <div *ngIf="f['role'].touched && f['role'].errors" class="invalid-feedback">
+            <div *ngIf="f['role'].errors['required']">Role is required.</div>
+          </div>
+        </div>
+
+        <!-- Error Message for API response during submit -->
+        <div *ngIf="errorMessage && isSubmitting" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+         <div *ngIf="errorMessage && !isSubmitting && staffForm.dirty" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+
+
+        <!-- Action Buttons -->
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="staffForm.invalid || isSubmitting || isLoading">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+            {{ isSubmitting ? 'Saving...' : 'Save Changes' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isSubmitting">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

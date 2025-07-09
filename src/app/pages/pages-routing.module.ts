@@ -13,6 +13,10 @@ const routes: Routes = [
   {
     path: 'users',
     loadChildren: () => import('./../pages/users/users.module').then(m => m.UsersModule)
+  },
+  {
+    path: 'staff', // This will be accessible via /admin/staff
+    loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule)
   }
 ];
 
