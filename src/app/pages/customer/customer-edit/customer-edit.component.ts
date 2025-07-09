@@ -7,7 +7,8 @@ import { Customer } from '../models/customer.model';
 @Component({
   selector: 'app-customer-edit',
   templateUrl: './customer-edit.component.html',
-  styleUrls: ['./customer-edit.component.css']
+  styleUrls: ['./customer-edit.component.css'],
+  standalone: false, // Explicitly set to false
 })
 export class CustomerEditComponent implements OnInit {
   customerForm!: FormGroup;
