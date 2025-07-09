@@ -11,6 +11,7 @@ import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { CoreModule } from './code/code.module';
+// StaffModule will be lazy loaded, so remove import from here
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CoreModule } from './code/code.module';
     CoreModule,
     AdminLayoutModule,
     PagesModule
+    // StaffModule removed for lazy loading
   ],
   providers: [],
   bootstrap: [AppComponent]

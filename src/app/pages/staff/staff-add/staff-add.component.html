@@ -1,0 +1,92 @@
+<div class="container-fluid">
+  <!-- Page Title -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="page-title mb-0">Add New Staff Member</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
+        <!-- First Name -->
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                 [ngClass]="{ 'is-invalid': f['firstName'].touched && f['firstName'].errors }">
+          <div *ngIf="f['firstName'].touched && f['firstName'].errors" class="invalid-feedback">
+            <div *ngIf="f['firstName'].errors['required']">First name is required.</div>
+          </div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                 [ngClass]="{ 'is-invalid': f['lastName'].touched && f['lastName'].errors }">
+          <div *ngIf="f['lastName'].touched && f['lastName'].errors" class="invalid-feedback">
+            <div *ngIf="f['lastName'].errors['required']">Last name is required.</div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" formControlName="email" class="form-control"
+                 [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].errors }">
+          <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">Email is required.</div>
+            <div *ngIf="f['email'].errors['email']">Please enter a valid email address.</div>
+          </div>
+        </div>
+
+        <!-- Phone (Optional) -->
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="text" id="phone" formControlName="phone" class="form-control">
+          <!-- No specific validation shown, can add if needed -->
+        </div>
+
+        <!-- Role -->
+        <div class="mb-3">
+          <label for="role" class="form-label">Role</label>
+          <input type="text" id="role" formControlName="role" class="form-control"
+                 placeholder="e.g., Admin, Manager, Technician"
+                 [ngClass]="{ 'is-invalid': f['role'].touched && f['role'].errors }">
+          <!-- Consider using a select dropdown if roles are predefined -->
+          <!--
+          <select id="role" formControlName="role" class="form-select"
+                  [ngClass]="{ 'is-invalid': f.role.touched && f.role.errors }">
+            <option value="" disabled>Select a role</option>
+            <option value="Admin">Admin</option>
+            <option value="Manager">Manager</option>
+            <option value="Technician">Technician</option>
+            <option value="Sales">Sales</option>
+          </select>
+          -->
+          <div *ngIf="f['role'].touched && f['role'].errors" class="invalid-feedback">
+            <div *ngIf="f['role'].errors['required']">Role is required.</div>
+          </div>
+        </div>
+
+        <!-- Error Message for API response -->
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="staffForm.invalid || isSubmitting">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+            {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isSubmitting">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
