@@ -35,23 +35,29 @@
               <th>#</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Company</th>
+              <!-- <th>Company</th> CompanyName was removed -->
               <th>Email</th>
               <th>Phone</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="customerList.length === 0 && !isLoading">
-              <td colspan="7" class="text-center">No customers found.</td>
+              <td colspan="7" class="text-center">No customers found.</td> <!-- Corrected colspan -->
             </tr>
             <tr *ngFor="let customer of customerList; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ customer.firstName }}</td>
-              <td>{{ customer.lastName }}</td>
-              <td>{{ customer.companyName || 'N/A' }}</td>
+              <td>{{ customer.lastName || 'N/A' }}</td>
+              <!-- <td>{{ customer.companyName || 'N/A' }}</td> CompanyName was removed -->
               <td>{{ customer.email }}</td>
               <td>{{ customer.phone || 'N/A' }}</td>
+              <td>
+                <span *ngIf="customer.status === 1" class="badge bg-success">Active</span>
+                <span *ngIf="customer.status === 0" class="badge bg-danger">Inactive</span>
+                <span *ngIf="customer.status === undefined || customer.status === null" class="badge bg-secondary">Unknown</span>
+              </td>
               <td>
                 <button class="btn btn-sm btn-outline-primary me-2" (click)="navigateToEditCustomer(customer.id)" title="Edit">
                   <i class="feather-edit-2"></i> Edit

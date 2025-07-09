@@ -22,16 +22,17 @@ export class CustomerAddComponent implements OnInit {
   ngOnInit(): void {
     this.customerForm = this.fb.group({
       firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      lastName: [''], // Nullable in DB, so not strictly required in form unless UX dictates
       email: ['', [Validators.required, Validators.email]],
       phone: [''],
-      companyName: [''],
-      addressStreet: [''],
-      addressCity: [''],
-      addressState: [''],
-      addressZipCode: [''],
-      addressCountry: ['']
-      // Add other fields as per your Customer model
+      companyName: [''], // Retained as optional from previous model version
+      address: ['', Validators.required], // Main address line
+      city: [''],
+      state: [''],
+      zipcode: [''],
+      country: [''],
+      profilePicUrl: [''], // URL for profile picture
+      status: [1] // Default to 1 (Active)
     });
   }
 
