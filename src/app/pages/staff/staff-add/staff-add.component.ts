@@ -6,13 +6,12 @@ import { StaffService } from '../services/staff.service';
 
 @Component({
   selector: 'app-staff-add',
-  standalone: false, // Will be part of StaffModule
-  // imports: [ReactiveFormsModule, CommonModule], // Needed if standalone: true. CommonModule for ngIf etc.
+  standalone: false,
   templateUrl: './staff-add.component.html',
-  styleUrl: './staff-add.component.css'
+  styleUrls: ['./staff-add.component.css'] // Corrected to styleUrls
 })
 export class StaffAddComponent implements OnInit {
-  staffForm!: FormGroup; // Definite assignment assertion
+  staffForm!: FormGroup;
   isSubmitting: boolean = false;
   errorMessage: string | null = null;
 
@@ -25,11 +24,18 @@ export class StaffAddComponent implements OnInit {
   ngOnInit(): void {
     this.staffForm = this.fb.group({
       firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      lastName: [''], // Optional based on model
       email: ['', [Validators.required, Validators.email]],
-      phone: [''], // Optional
-      role: ['', Validators.required] // e.g., 'Admin', 'Manager', 'Employee'
-      // Add other fields as per your Staff model
+      phone: [''],
+      role: ['', Validators.required],
+      address1: ['', Validators.required],
+      address2: [''],
+      city: [''],
+      state: [''],
+      zipcode: [''],
+      country: [''],
+      profilePicUrl: [''],
+      status: [1, Validators.required] // Default to Active (1) and make it required
     });
   }
 
