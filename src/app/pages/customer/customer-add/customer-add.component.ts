@@ -6,7 +6,8 @@ import { CustomerService } from '../services/customer.service';
 @Component({
   selector: 'app-customer-add',
   templateUrl: './customer-add.component.html',
-  styleUrls: ['./customer-add.component.css']
+  styleUrls: ['./customer-add.component.css'],
+  standalone: false, // Explicitly set to false
 })
 export class CustomerAddComponent implements OnInit {
   customerForm!: FormGroup;
