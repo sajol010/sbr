@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: 'staff', // This will be accessible via /admin/staff
     loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule)
+  },
+  {
+    path: 'customers', // This will be accessible via /admin/customers
+    loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule)
   }
 ];
 
