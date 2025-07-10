@@ -25,69 +25,70 @@
   </div>
 
   <!-- Booking Details Card -->
-  <div *ngIf="booking && !isLoading && !errorMessage" class="card">
+  <!-- Main *ngIf="booking" wrapper ensures booking is not null here -->
+  <div *ngIf="booking" class="card">
     <div class="card-header">
-      <h5 class="card-title">Booking ID: #{{ booking?.id }}</h5>
+      <h5 class="card-title">Booking ID: #{{ booking.id }}</h5>
     </div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
           <dl class="row">
             <dt class="col-sm-4">Date:</dt>
-            <dd class="col-sm-8">{{ booking?.booking_date | date: 'fullDate' }}</dd>
+            <dd class="col-sm-8">{{ booking.booking_date | date: 'fullDate' }}</dd>
 
             <dt class="col-sm-4">Time:</dt>
-            <dd class="col-sm-8">{{ booking?.start_time }} <span *ngIf="booking?.end_time">- {{ booking?.end_time }}</span></dd>
+            <dd class="col-sm-8">{{ booking.start_time }} <span *ngIf="booking.end_time">- {{ booking.end_time }}</span></dd>
 
             <dt class="col-sm-4">Status:</dt>
             <dd class="col-sm-8">
               <span class="badge" [ngClass]="{
-                'bg-success': booking?.status?.toLowerCase() === 'confirmed',
-                'bg-warning text-dark': booking?.status?.toLowerCase() === 'pending',
-                'bg-danger': booking?.status?.toLowerCase() === 'cancelled',
-                'bg-info': booking?.status?.toLowerCase() === 'completed',
-                'bg-secondary': !booking?.status || !['confirmed', 'pending', 'cancelled', 'completed'].includes(booking?.status!.toLowerCase())
+                'bg-success': booking.status?.toLowerCase() === 'confirmed',
+                'bg-warning text-dark': booking.status?.toLowerCase() === 'pending',
+                'bg-danger': booking.status?.toLowerCase() === 'cancelled',
+                'bg-info': booking.status?.toLowerCase() === 'completed',
+                'bg-secondary': !booking.status || !['confirmed', 'pending', 'cancelled', 'completed'].includes(booking.status!.toLowerCase())
               }">
-                {{ booking?.status || 'N/A' | titlecase }}
+                {{ booking.status || 'N/A' | titlecase }}
               </span>
             </dd>
 
             <dt class="col-sm-4">Service:</dt>
-            <dd class="col-sm-8">{{ booking?.service?.name || booking?.service_id }} <!-- Display service name if available --></dd>
+            <dd class="col-sm-8">{{ booking.service?.name || booking.service_id }} <!-- Display service name if available --></dd>
           </dl>
         </div>
         <div class="col-md-6">
           <dl class="row">
             <dt class="col-sm-4">Customer:</dt>
             <dd class="col-sm-8">
-              <span *ngIf="booking?.customer">{{ booking?.customer?.firstName }} {{ booking?.customer?.lastName || '' }} (ID: {{ booking?.customer_id }})</span>
-              <span *ngIf="!booking?.customer">ID: {{ booking?.customer_id }}</span>
+              <span *ngIf="booking.customer">{{ booking.customer?.firstName }} {{ booking.customer?.lastName || '' }} (ID: {{ booking.customer_id }})</span>
+              <span *ngIf="!booking.customer">ID: {{ booking.customer_id }}</span>
               <!-- TODO: Link to customer details page -->
             </dd>
 
             <dt class="col-sm-4">Staff:</dt>
             <dd class="col-sm-8">
-              <span *ngIf="booking?.staff">{{ booking?.staff?.firstName }} {{ booking?.staff?.lastName || '' }} (ID: {{ booking?.staff_id }})</span>
-              <span *ngIf="!booking?.staff">ID: {{ booking?.staff_id }}</span>
+              <span *ngIf="booking.staff">{{ booking.staff?.firstName }} {{ booking.staff?.lastName || '' }} (ID: {{ booking.staff_id }})</span>
+              <span *ngIf="!booking.staff">ID: {{ booking.staff_id }}</span>
                <!-- TODO: Link to staff details page -->
             </dd>
 
             <dt class="col-sm-4">Created At:</dt>
-            <dd class="col-sm-8">{{ booking?.createdAt | date: 'medium' }}</dd>
+            <dd class="col-sm-8">{{ booking.createdAt | date: 'medium' }}</dd>
 
             <dt class="col-sm-4">Last Updated:</dt>
-            <dd class="col-sm-8">{{ booking?.updatedAt | date: 'medium' }}</dd>
+            <dd class="col-sm-8">{{ booking.updatedAt | date: 'medium' }}</dd>
           </dl>
         </div>
       </div>
 
-      <div *ngIf="booking?.notes" class="mt-3">
+      <div *ngIf="booking.notes" class="mt-3">
         <h6>Notes:</h6>
-        <p class="text-muted" style="white-space: pre-wrap;">{{ booking?.notes }}</p>
+        <p class="text-muted" style="white-space: pre-wrap;">{{ booking.notes }}</p>
       </div>
 
     </div>
-    <div class="card-footer text-end" *ngIf="booking?.status?.toLowerCase() === 'confirmed' || booking?.status?.toLowerCase() === 'pending'">
+    <div class="card-footer text-end" *ngIf="booking.status?.toLowerCase() === 'confirmed' || booking.status?.toLowerCase() === 'pending'">
         <button class="btn btn-outline-primary me-2" (click)="rescheduleBooking()" title="Reschedule Booking">
             <i class="feather-edit-2 me-1"></i> Reschedule
         </button>
