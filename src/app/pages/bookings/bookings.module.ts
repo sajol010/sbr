@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule here
 
 import { BookingsRoutingModule } from './bookings-routing.module';
 import { BookingListComponent } from './booking-list/booking-list.component';
