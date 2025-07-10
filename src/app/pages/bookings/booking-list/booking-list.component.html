@@ -60,10 +60,20 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ booking.booking_date | date: 'mediumDate' }}</td>
                     <td>{{ booking.start_time }}</td>
-                    <td>{{ booking.customer?.firstName || booking.customer_id }}</td> <!-- Display name if available -->
-                    <td>{{ booking.staff?.firstName || booking.staff_id }}</td>       <!-- Display name if available -->
-                    <td>{{ booking.service?.name || booking.service_id }}</td> <!-- Display service name if available -->
-                    <td><span class="badge" [ngClass]="{'bg-success': booking.status === 'confirmed', 'bg-warning': booking.status === 'pending', 'bg-secondary': !booking.status}">{{ booking.status || 'N/A' }}</span></td>
+                    <td>{{ booking.customer?.firstName ? (booking.customer?.firstName + ' ' + (booking.customer?.lastName || '')) : booking.customer_id }}</td>
+                    <td>{{ booking.staff?.firstName ? (booking.staff?.firstName + ' ' + (booking.staff?.lastName || '')) : booking.staff_id }}</td>
+                    <td>{{ booking.service?.name || booking.service_id }}</td>
+                    <td>
+                        <span class="badge" [ngClass]="{
+                            'bg-success': booking.status?.toLowerCase() === 'confirmed',
+                            'bg-warning text-dark': booking.status?.toLowerCase() === 'pending',
+                            'bg-danger': booking.status?.toLowerCase() === 'cancelled',
+                            'bg-info': booking.status?.toLowerCase() === 'completed',
+                            'bg-secondary': !booking.status || !['confirmed', 'pending', 'cancelled', 'completed'].includes(booking.status!.toLowerCase())
+                        }">
+                            {{ booking.status || 'N/A' | titlecase }}
+                        </span>
+                    </td>
                     <td>
                       <button class="btn btn-sm btn-outline-info me-2" (click)="viewBookingDetails(booking.id)" title="View Details"><i class="feather-eye"></i></button>
                       <button class="btn btn-sm btn-outline-primary me-2" (click)="rescheduleBooking(booking.id)" title="Reschedule"><i class="feather-edit-2"></i></button>
@@ -111,10 +121,20 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ booking.booking_date | date: 'mediumDate' }}</td>
                     <td>{{ booking.start_time }}</td>
-                    <td>{{ booking.customer?.firstName || booking.customer_id }}</td>
-                    <td>{{ booking.staff?.firstName || booking.staff_id }}</td>
-                    <td>{{ booking.service_id }}</td> <!-- TODO: Display service name -->
-                    <td><span class="badge" [ngClass]="{'bg-info': booking.status === 'completed', 'bg-danger': booking.status === 'cancelled', 'bg-secondary': !booking.status}">{{ booking.status || 'N/A' }}</span></td>
+                    <td>{{ booking.customer?.firstName ? (booking.customer?.firstName + ' ' + (booking.customer?.lastName || '')) : booking.customer_id }}</td>
+                    <td>{{ booking.staff?.firstName ? (booking.staff?.firstName + ' ' + (booking.staff?.lastName || '')) : booking.staff_id }}</td>
+                    <td>{{ booking.service?.name || booking.service_id }}</td> <!-- Display service name if available -->
+                    <td>
+                        <span class="badge" [ngClass]="{
+                            'bg-success': booking.status?.toLowerCase() === 'confirmed',
+                            'bg-warning text-dark': booking.status?.toLowerCase() === 'pending',
+                            'bg-danger': booking.status?.toLowerCase() === 'cancelled',
+                            'bg-info': booking.status?.toLowerCase() === 'completed',
+                            'bg-secondary': !booking.status || !['confirmed', 'pending', 'cancelled', 'completed'].includes(booking.status!.toLowerCase())
+                        }">
+                            {{ booking.status || 'N/A' | titlecase }}
+                        </span>
+                    </td>
                     <td>
                       <button class="btn btn-sm btn-outline-info" (click)="viewBookingDetails(booking.id)" title="View Details"><i class="feather-eye"></i></button>
                       <!-- No reschedule/cancel for past bookings usually -->
