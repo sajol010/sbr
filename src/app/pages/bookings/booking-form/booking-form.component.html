@@ -1,0 +1,128 @@
+<div class="container-fluid">
+  <!-- Page Title -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="page-title mb-0">{{ pageTitle }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator for initial data load (edit mode) -->
+  <div *ngIf="isLoading && isEditMode" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading booking details...</span>
+    </div>
+    <p>Loading booking details...</p>
+  </div>
+
+  <div class="card" *ngIf="!isLoading || !isEditMode"> <!-- Show form if not loading in edit mode, or if in create mode -->
+    <div class="card-body">
+      <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+
+        <!-- Row for Service, Staff, Customer Dropdowns -->
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="service_id" class="form-label">Service</label>
+            <select id="service_id" formControlName="service_id" class="form-select"
+                    [ngClass]="{ 'is-invalid': bookingForm.get('service_id')?.touched && bookingForm.get('service_id')?.errors }"
+                    [disabled]="dataLoadingStates.services">
+              <option [ngValue]="null" disabled>{{ dataLoadingStates.services ? 'Loading...' : 'Select a Service' }}</option>
+              <option *ngFor="let service of allServices" [ngValue]="service.id">
+                {{ service.name }}
+              </option>
+            </select>
+            <div *ngIf="bookingForm.get('service_id')?.touched && bookingForm.get('service_id')?.errors" class="invalid-feedback">
+              <div *ngIf="bookingForm.get('service_id')?.errors?.['required']">Service is required.</div>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="staff_id" class="form-label">Staff</label>
+            <select id="staff_id" formControlName="staff_id" class="form-select"
+                    [ngClass]="{ 'is-invalid': bookingForm.get('staff_id')?.touched && bookingForm.get('staff_id')?.errors }"
+                    [disabled]="dataLoadingStates.staff">
+              <option [ngValue]="null" disabled>{{ dataLoadingStates.staff ? 'Loading...' : 'Select Staff' }}</option>
+              <option *ngFor="let staff of allStaff" [ngValue]="staff.id">
+                {{ staff.firstName }} {{ staff.lastName || '' }}
+              </option>
+            </select>
+             <div *ngIf="bookingForm.get('staff_id')?.touched && bookingForm.get('staff_id')?.errors" class="invalid-feedback">
+              <div *ngIf="bookingForm.get('staff_id')?.errors?.['required']">Staff is required.</div>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="customer_id" class="form-label">Customer</label>
+            <select id="customer_id" formControlName="customer_id" class="form-select"
+                    [ngClass]="{ 'is-invalid': bookingForm.get('customer_id')?.touched && bookingForm.get('customer_id')?.errors }"
+                    [disabled]="dataLoadingStates.customers">
+              <option [ngValue]="null" disabled>{{ dataLoadingStates.customers ? 'Loading...' : 'Select Customer' }}</option>
+              <option *ngFor="let customer of allCustomers" [ngValue]="customer.id">
+                {{ customer.firstName }} {{ customer.lastName || '' }} ({{customer.email}})
+              </option>
+            </select>
+            <div *ngIf="bookingForm.get('customer_id')?.touched && bookingForm.get('customer_id')?.errors" class="invalid-feedback">
+              <div *ngIf="bookingForm.get('customer_id')?.errors?.['required']">Customer is required.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking Date -->
+        <div class="mb-3">
+          <label for="booking_date" class="form-label">Booking Date</label>
+          <input type="date" id="booking_date" formControlName="booking_date" class="form-control"
+                 [ngClass]="{ 'is-invalid': bookingForm.get('booking_date')?.touched && bookingForm.get('booking_date')?.errors }">
+          <div *ngIf="bookingForm.get('booking_date')?.touched && bookingForm.get('booking_date')?.errors" class="invalid-feedback">
+            <div *ngIf="bookingForm.get('booking_date')?.errors?.['required']">Booking date is required.</div>
+          </div>
+        </div>
+
+        <!-- Available Slots Component -->
+        <div class="mb-3">
+            <label class="form-label">Available Time Slots</label>
+            <app-available-slots
+                [staffId]="selectedStaffId"
+                [serviceId]="selectedServiceId"
+                [date]="selectedDate"
+                (slotSelected)="onSlotSelected($event)">
+            </app-available-slots>
+             <div *ngIf="bookingForm.get('start_time')?.touched && bookingForm.get('start_time')?.errors?.['required']" class="text-danger small mt-1">
+                Please select an available time slot.
+            </div>
+        </div>
+
+        <!-- Selected Start Time (Readonly or hidden, as it's set by app-available-slots) -->
+        <div class="mb-3" *ngIf="bookingForm.get('start_time')?.value">
+          <label for="start_time_display" class="form-label">Selected Time</label>
+          <input type="text" id="start_time_display" [value]="bookingForm.get('start_time')?.value" class="form-control" readonly>
+        </div>
+         <!-- Hidden input for start_time to ensure it's part of the form if not displayed directly -->
+        <input type="hidden" formControlName="start_time">
+
+
+        <!-- Notes (Optional) -->
+        <div class="mb-3">
+          <label for="notes" class="form-label">Notes</label>
+          <textarea id="notes" formControlName="notes" class="form-control" rows="3"></textarea>
+        </div>
+
+        <!-- Error Message for API response -->
+        <div *ngIf="errorMessage && !isSubmitting" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="bookingForm.invalid || isSubmitting">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+            {{ isSubmitting ? (isEditMode ? 'Rescheduling...' : 'Creating...') : (isEditMode ? 'Reschedule Booking' : 'Create Booking') }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isSubmitting">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

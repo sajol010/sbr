@@ -1,0 +1,131 @@
+<div class="container-fluid">
+  <!-- Page Title & Create Button -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="page-title mb-0">Bookings Management</h4>
+        <button class="btn btn-primary" (click)="navigateToCreateBooking()">
+          <i class="feather-plus-circle me-2"></i>Create New Booking
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs for Upcoming/Past -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'upcoming'" (click)="selectTab('upcoming')" href="javascript:void(0)">
+        Upcoming Bookings
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'past'" (click)="selectTab('past')" href="javascript:void(0)">
+        Past Bookings
+      </a>
+    </li>
+  </ul>
+
+  <!-- Content for selected tab -->
+  <div [ngSwitch]="activeTab">
+    <!-- Upcoming Bookings Tab -->
+    <div *ngSwitchCase="'upcoming'">
+      <div *ngIf="isLoadingUpcoming" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+        <p>Loading upcoming bookings...</p>
+      </div>
+      <div *ngIf="errorUpcoming && !isLoadingUpcoming" class="alert alert-danger">
+        {{ errorUpcoming }}
+        <button class="btn btn-sm btn-link" (click)="loadUpcomingBookings()">Try Again</button>
+      </div>
+      <div *ngIf="!isLoadingUpcoming && !errorUpcoming">
+        <div *ngIf="upcomingBookings.length === 0" class="alert alert-info">No upcoming bookings found.</div>
+        <div *ngIf="upcomingBookings.length > 0" class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Customer</th> <!-- Assuming customer_id or customer object with name -->
+                    <th>Staff</th>   <!-- Assuming staff_id or staff object with name -->
+                    <th>Service</th> <!-- Assuming service_id or service object with name -->
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let booking of upcomingBookings; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ booking.booking_date | date: 'mediumDate' }}</td>
+                    <td>{{ booking.start_time }}</td>
+                    <td>{{ booking.customer?.firstName || booking.customer_id }}</td> <!-- Display name if available -->
+                    <td>{{ booking.staff?.firstName || booking.staff_id }}</td>       <!-- Display name if available -->
+                    <td>{{ booking.service?.name || booking.service_id }}</td> <!-- Display service name if available -->
+                    <td><span class="badge" [ngClass]="{'bg-success': booking.status === 'confirmed', 'bg-warning': booking.status === 'pending', 'bg-secondary': !booking.status}">{{ booking.status || 'N/A' }}</span></td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-info me-2" (click)="viewBookingDetails(booking.id)" title="View Details"><i class="feather-eye"></i></button>
+                      <button class="btn btn-sm btn-outline-primary me-2" (click)="rescheduleBooking(booking.id)" title="Reschedule"><i class="feather-edit-2"></i></button>
+                      <button class="btn btn-sm btn-outline-danger" (click)="cancelBooking(booking.id)" title="Cancel"><i class="feather-trash-2"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Past Bookings Tab -->
+    <div *ngSwitchCase="'past'">
+      <div *ngIf="isLoadingPast" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+        <p>Loading past bookings...</p>
+      </div>
+      <div *ngIf="errorPast && !isLoadingPast" class="alert alert-danger">
+        {{ errorPast }}
+        <button class="btn btn-sm btn-link" (click)="loadPastBookings()">Try Again</button>
+      </div>
+      <div *ngIf="!isLoadingPast && !errorPast">
+        <div *ngIf="pastBookings.length === 0" class="alert alert-info">No past bookings found.</div>
+        <div *ngIf="pastBookings.length > 0" class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Customer</th>
+                    <th>Staff</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let booking of pastBookings; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ booking.booking_date | date: 'mediumDate' }}</td>
+                    <td>{{ booking.start_time }}</td>
+                    <td>{{ booking.customer?.firstName || booking.customer_id }}</td>
+                    <td>{{ booking.staff?.firstName || booking.staff_id }}</td>
+                    <td>{{ booking.service_id }}</td> <!-- TODO: Display service name -->
+                    <td><span class="badge" [ngClass]="{'bg-info': booking.status === 'completed', 'bg-danger': booking.status === 'cancelled', 'bg-secondary': !booking.status}">{{ booking.status || 'N/A' }}</span></td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-info" (click)="viewBookingDetails(booking.id)" title="View Details"><i class="feather-eye"></i></button>
+                      <!-- No reschedule/cancel for past bookings usually -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

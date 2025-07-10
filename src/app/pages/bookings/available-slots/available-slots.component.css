@@ -1,0 +1,15 @@
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Adjust minmax for button width */
+  gap: 0.5rem; /* Space between buttons */
+  margin-top: 0.5rem;
+}
+
+.slot-button {
+  width: 100%; /* Make buttons fill the grid cell */
+}
+
+/* Optional: if alerts are too big, make them smaller */
+.alert-sm {
+  font-size: 0.875em; /* Smaller font size for alerts within this component */
+}

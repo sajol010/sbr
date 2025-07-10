@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'customers', // This will be accessible via /admin/customers
     loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule)
+  },
+  {
+    path: 'bookings', // This will be accessible via /admin/bookings
+    loadChildren: () => import('./bookings/bookings.module').then(m => m.BookingsModule)
   }
 ];
 
